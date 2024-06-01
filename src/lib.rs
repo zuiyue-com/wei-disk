@@ -96,13 +96,10 @@ pub fn list_data_disk() -> Result<Vec<String>, Box<dyn std::error::Error>> {
 
 pub fn install_zfs() -> Result<(), Box<dyn std::error::Error>> {
     // 判断是否已经安装zfs
-    let output = Command::new("zfs")
-        .output()
-        .expect("Failed to execute command");
-
-    if output.status.success() {
-        return Ok(());
-    }
+    match Command::new("zfs").output() {
+        Ok(_) => return Ok(()),
+        Err(_) => (),
+    };
 
     let output = Command::new("apt")
         .arg("install")
